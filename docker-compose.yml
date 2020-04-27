@@ -1,0 +1,57 @@
+# Drupal with docker
+#
+# During initial Drupal setup,
+# Database type: MySQL
+# Database name: mysql
+# Database username: root
+# Database password: mysql
+# ADVANCED OPTIONS; Database host: mysql
+
+version: '3.1'
+
+services:
+
+  drupal:
+    image: geerlingguy/drupal:latest
+    container_name: drupal
+    environment:
+      DRUPAL_DATABASE_HOST: mysql
+      DRUPAL_DATABASE_PORT: 3306
+      DRUPAL_DATABASE_NAME: mysql
+      DRUPAL_DATABASE_USERNAME: root
+      DRUPAL_DATABASE_PASSWORD: mysql
+      # Generate a salt with: `php -r "echo bin2hex(random_bytes(25));"`
+      DRUPAL_HASH_SALT: d7c6588ca1ffb662fa841bebdf6147f45b164169148f8624dc
+    # Uncomment the volumes line and set to the local path of your Drupal
+    # installation, if you need to work with a local codebase.
+    volumes:
+      - ~/Sites/drupal-container:/var/www/html:rw,delegated
+    network_mode: bridge
+    ports:
+      - 8010:80
+    restart: always
+    depends_on:
+      - mysql
+    links:
+      - mysql
+  mysql:
+    image: "mariadb"
+    container_name: mysql
+    volumes:
+      - ./mysql:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: mysql
+    network_mode: bridge
+    restart: always
+  adminer:
+    image: adminer
+    network_mode: bridge
+    container_name: adminer
+    network_mode: bridge
+    restart: always
+    ports:
+      - 8011:8080
+    depends_on:
+    - mysql
+    links:
+    - mysql
