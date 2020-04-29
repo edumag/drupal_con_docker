@@ -1,0 +1,29 @@
+#!/bin/bash
+
+PORT=8010
+PORT_ADMINER=8011
+NAME_CONTAINER=drupal-cercle
+
+systemctl is-active docker
+
+if [ $? != 0 ] ; then
+    echo "Iniciamos docker"
+    sudo service docker start
+fi
+
+echo "Levatamos contenedores docker desde docker-compose.yml" 
+docker-compose up -d 
+
+echo
+echo Aplicación: http://localhost:$PORT
+xdg-open "http://localhost:$PORT"
+
+if [ -n $PORT_ADMINER ] ; then
+echo
+echo Adminer: http://localhost:$PORT_ADMINER
+fi
+echo
+echo Para ver los logs:
+echo
+echo docker-compose logs -f 
+echo
