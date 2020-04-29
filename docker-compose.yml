@@ -5,17 +5,17 @@
 # Database name: mysql
 # Database username: root
 # Database password: mysql
-# ADVANCED OPTIONS; Database host: mysql
+# ADVANCED OPTIONS; Database host: mysql-cercle
 
 version: '3.1'
 
 services:
 
-  drupal:
+  drupal-cercle:
     image: geerlingguy/drupal:latest
-    container_name: drupal
+    container_name: drupal-cercle
     environment:
-      DRUPAL_DATABASE_HOST: mysql
+      DRUPAL_DATABASE_HOST: mysql-cercle
       DRUPAL_DATABASE_PORT: 3306
       DRUPAL_DATABASE_NAME: mysql
       DRUPAL_DATABASE_USERNAME: root
@@ -25,33 +25,33 @@ services:
     # Uncomment the volumes line and set to the local path of your Drupal
     # installation, if you need to work with a local codebase.
     volumes:
-      - ~/Sites/drupal-container:/var/www/html:rw,delegated
+      - ./drupal:/var/www/html:rw,delegated
     network_mode: bridge
     ports:
       - 8010:80
     restart: always
     depends_on:
-      - mysql
+      - mysql-cercle
     links:
-      - mysql
-  mysql:
+      - mysql-cercle
+  mysql-cercle:
     image: "mariadb"
-    container_name: mysql
+    container_name: mysql-cercle
     volumes:
       - ./mysql:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: mysql
     network_mode: bridge
     restart: always
-  adminer:
+  adminer-cercle:
     image: adminer
     network_mode: bridge
-    container_name: adminer
+    container_name: adminer-cercle
     network_mode: bridge
     restart: always
     ports:
       - 8011:8080
     depends_on:
-    - mysql
+    - mysql-cercle
     links:
-    - mysql
+    - mysql-cercle
