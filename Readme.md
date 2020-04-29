@@ -37,8 +37,7 @@ ln -s /var/www/html/vendor/drush/drush/drush /usr/local/bin/
 ### Console commands
 
 ```
-cd web
-drupal cache:rebuild
+./vendor/drupal/console/bin/drupal cache:rebuild
 ```
 ### Composer.
 
@@ -57,8 +56,7 @@ Añadimos COMPOSER_MEMORY_LIMIT para evitar problemas de memoria.
 ### Activar módulo
 
 ```
-cd web/
-drupal module:install devel
+./vendor/drupal/console/bin/drupal module:install devel
 ```
 
 ### Actualizar drupal
@@ -72,16 +70,24 @@ drush cache:rebuild
 ### Crear contenido de prueba.
 
 ```
-drupal create:terms
-drupal create:nodes
+./vendor/drupal/console/bin/drupal create:terms
+./vendor/drupal/console/bin/drupal create:nodes
 ```
 
 ### Instalar y activar tema.
 
 ```
-drupal theme:download bootstrap_barrio
+./vendor/drupal/console/bin/drupal theme:download bootstrap_barrio
 drush theme:enable bootstrap_barrio
 ```
+
+## Instalar tema basado en material design
+
+`COMPOSER_MEMORY_LIMIT=-1 composer require drupal/material_base`
+
+### Dependencias
+
+`COMPOSER_MEMORY_LIMIT=-1 composer require drupal/block_class`
 
 ## Referencias
 
