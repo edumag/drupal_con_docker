@@ -1,20 +1,22 @@
-# Drupal8 con docker
+# Entorno desarrollo drupal con docker
 
 ## Iniciar 
 
-```
-docker-composer up
-```
+`./run`
+
+o
+
+`docker-composer up`
 
 Abrir http://localhost:8010
 
-Hacer la instalción manualmente.
-
 ## Entrar en contenedor.
 
-`docker exec -it drupal8 bash`
+`docker exec -it drupal-cercle bash`
 
-## Instalar drupal console.
+Una vez dentro del contenedor instalaremos drupal-console y drush.
+
+### Instalar drupal console.
 
 ```
 composer require drupal/console:~1.0 --prefer-dist --optimize-autoloader
@@ -23,26 +25,28 @@ mv drupal.phar /usr/local/bin/drupal
 chmod +x /usr/local/bin/drupal
 ```
 
-## Instalar drush.
+### Instalar drush.
 
 ```
 composer require drush/drush
 ln -s /var/www/html/vendor/drush/drush/drush /usr/local/bin/
 ```
 
-## Console commands
+## Ejemplo de comandos que nos ayudarán en el desarrollo.
+
+### Console commands
 
 ```
 cd web
 drupal cache:rebuild
 ```
-## Composer.
+### Composer.
 
 ```
 composer require drupal/devel
 ```
 
-## Instalar módulos:
+### Instalar módulos:
 
 ```
 COMPOSER_MEMORY_LIMIT=-1 composer require drupal/devel
@@ -50,14 +54,14 @@ COMPOSER_MEMORY_LIMIT=-1 composer require drupal/devel
 
 Añadimos COMPOSER_MEMORY_LIMIT para evitar problemas de memoria.
 
-## Activar módulo
+### Activar módulo
 
 ```
 cd web/
 drupal module:install devel
 ```
 
-## Actualizar drupal
+### Actualizar drupal
 
 ```
 COMPOSER_MEMORY_LIMIT=-1 composer update
@@ -65,14 +69,14 @@ drush updatedb
 drush cache:rebuild
 ```
 
-## Crear contenido de prueba.
+### Crear contenido de prueba.
 
 ```
 drupal create:terms
 drupal create:nodes
 ```
 
-## Instalar y activar tema.
+### Instalar y activar tema.
 
 ```
 drupal theme:download bootstrap_barrio
