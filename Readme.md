@@ -10,7 +10,7 @@ o
 
 Abrir http://localhost:8010
 
-## Entrar en contenedor.
+### Entrar en contenedor.
 
 `docker exec -it drupal-cercle bash`
 
@@ -32,20 +32,27 @@ composer require drush/drush
 ln -s /var/www/html/vendor/drush/drush/drush /usr/local/bin/
 ```
 
+### Instalación del proyecto
+
+`drush site:install`
+
+### Referencias
+
+- https://github.com/geerlingguy/drupal-container
+
 ## Ejemplo de comandos que nos ayudarán en el desarrollo.
 
-### Console commands
+### Estado de las actualizaciones
+
+`./vendor/drush/drush/drush updatedb:status`
+
+### Borrar cache
 
 ```
 ./vendor/drupal/console/bin/drupal cache:rebuild
 ```
-### Composer.
 
-```
-composer require drupal/devel
-```
-
-### Instalar módulos:
+### Instalar módulo devel
 
 ```
 COMPOSER_MEMORY_LIMIT=-1 composer require drupal/devel
@@ -63,8 +70,8 @@ Añadimos COMPOSER_MEMORY_LIMIT para evitar problemas de memoria.
 
 ```
 COMPOSER_MEMORY_LIMIT=-1 composer update
-drush updatedb
-drush cache:rebuild
+./vendor/drush/drush/drush updatedb
+./vendor/drush/drush/drush cache:rebuild
 ```
 
 ### Crear contenido de prueba.
@@ -74,21 +81,41 @@ drush cache:rebuild
 ./vendor/drupal/console/bin/drupal create:nodes
 ```
 
-### Instalar y activar tema.
+### Instalar y activar tema con drupal console.
 
 ```
 ./vendor/drupal/console/bin/drupal theme:download bootstrap_barrio
-drush theme:enable bootstrap_barrio
+./vendor/drush/drush/drush theme:enable bootstrap_barrio
 ```
 
-## Instalar tema basado en material design
+### Instalar tema con composer
 
 `COMPOSER_MEMORY_LIMIT=-1 composer require drupal/material_base`
 
-### Dependencias
 
-`COMPOSER_MEMORY_LIMIT=-1 composer require drupal/block_class`
 
-## Referencias
+## Crear tema hijo basado en el tema Barrio
+
+```bash
+./vendor/drupal/console/bin/drupal theme:download bootstrap_barrio
+./vendor/drush/drush/drush theme:enable bootstrap_barrio
+mkdir themes/custom
+cp -R themes/contrib/bootstrap_barrio/subtheme/ themes/custom/
+cd themes/custom
+mv subtheme $TEMA_PROPIO
+cd $TEMA_PROPIO
+# Renombrar ficheros
+rename 's/bootstrap_barrio_subtheme/$TEMA_PROPIO/g' * */* */*/*
+# Renombrar referencias del código.
+sed -i -e 's/bootstrap_barrio_subtheme/$TEMA_PROPIO/g' * */* */*/*
+# Nombre del tema.
+sed -i -e 's/Bootstrap Barrio Subtheme/Temapropio/g' *.info.yml
+```
+
+
+
+### Referencias
 
 - https://github.com/geerlingguy/drupal-container
+- [Crear y configurar tema hijo del tema Barrio](https://www.youtube.com/watch?v=D5A_aFdlWEs)
+
