@@ -29,7 +29,6 @@ services:
     network_mode: bridge
     ports:
       - 8010:80
-    restart: always
     depends_on:
       - mysql-cercle
     links:
@@ -42,13 +41,11 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: mysql
     network_mode: bridge
-    restart: always
   adminer-cercle:
     image: adminer
     network_mode: bridge
     container_name: adminer-cercle
     network_mode: bridge
-    restart: always
     ports:
       - 8011:8080
     depends_on:
